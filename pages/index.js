@@ -1,12 +1,15 @@
+import { useState } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
 import buildspaceLogo from '../assets/buildspace-logo.png';
-import { useState } from 'react';
-
 
 const Home = () => {
-  const [userInput, setUserInput] = useState('');
-  const [apiOutput, setApiOutput] = useState('')
+const [userInput, setUserInput] = useState('');
+const onUserChangedText = (event) => {
+  console.log(event.target.value);
+  setUserInput(event.target.value);
+};
+const [apiOutput, setApiOutput] = useState('')
 const [isGenerating, setIsGenerating] = useState(false)
 
 const callGenerateEndpoint = async () => {
@@ -25,47 +28,39 @@ const callGenerateEndpoint = async () => {
   const { output } = data;
   console.log("OpenAI replied...", output.text)
 
-  setApiOutput(`${output.text}`);
+setApiOutput(`${output.text}`);
   setIsGenerating(false);
 }
-  const onUserChangedText = (event) => {
-    console.log(event.target.value);
-    setUserInput(event.target.value);
-  };
   return (
     <div className="root">
       <div className="container">
         <div className="header">
           <div className="header-title">
-            <h1>Talk to Rama from HCA</h1>
+          <Image src={buildspaceLogo} alt="buildspace logo" height="60px" weight="60px" />
+            <h1>Buildspace Magic Word</h1>
           </div>
           <div className="header-subtitle">
-            <h2>Write a message about anything here, he will reply as soon as possible. Good luck!</h2>
+            <h2>Just for fun, Let's play!!</h2>
           </div>
         </div>
-        {
-          // ga ada apa apa
-}
-<div className="prompt-container">
-  <textarea
-    placeholder="start typing here"
-    className="prompt-box"
-    value={userInput}
-    onChange={onUserChangedText}
-  />
-  <div className="prompt-buttons">
+        <textarea
+  className="prompt-box"
+  placeholder="start typing here"
+  value={userInput}
+  onChange={onUserChangedText}
+/>
+<div className="prompt-buttons">
   <a
     className={isGenerating ? 'generate-button loading' : 'generate-button'}
     onClick={callGenerateEndpoint}
   >
     <div className="generate">
-    {isGenerating ? <span class="loader"></span> : <p>Generate</p>}
+    {isGenerating ? <span className="loader"></span> : <p>Generate</p>}
     </div>
   </a>
-</div>
-  {/* New code I added here */}
-  {apiOutput && (
-  <div className="output">
+  </div>
+    {apiOutput && (
+    <div className="output">
     <div className="output-header-container">
       <div className="output-header">
         <h3>Output</h3>
@@ -76,7 +71,6 @@ const callGenerateEndpoint = async () => {
     </div>
   </div>
 )}
-</div>
       </div>
       <div className="badge-container grow">
         <a
